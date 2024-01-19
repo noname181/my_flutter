@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_flutter_app/pages/shopping/category.dart';
 import 'package:first_flutter_app/pages/shopping/top_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class ShoppingPage extends StatefulWidget {
 
 class _ShoppingPageState extends State<ShoppingPage> {
   late Future sliders;
-
+  FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,6 +34,14 @@ class _ShoppingPageState extends State<ShoppingPage> {
           ),
         ),
         const CategorySlide(),
+        InkWell(
+          onTap: () {
+            auth
+                .signOut()
+                .then((value) => {Navigator.pushNamed(context, '/login')});
+          },
+          child: const Text('LOG OUT'),
+        ),
       ],
     );
   }
