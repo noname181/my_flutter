@@ -1,4 +1,4 @@
-#Fri Jan 19 15:42:10 ICT 2024
+#Sat Jan 20 10:42:13 ICT 2024
 base.0=C\:\\Users\\RianSoft PC\\Desktop\\first_flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
