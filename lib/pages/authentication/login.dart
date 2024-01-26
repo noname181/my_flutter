@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_flutter_app/models/sns_login_model.dart';
 import 'package:first_flutter_app/pages/index.dart';
 import 'package:flutter/material.dart';
+import '../../providers/sns/sns-login/mixin/kakao_auth_mixin.dart';
+import '../../utils/extension/enums/sns_type_enum.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,7 +12,7 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with KakaoAuthMixin {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   final TextEditingController _emailController = TextEditingController();
@@ -17,6 +20,32 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<SnsLoginModel?> signInFollowSNS(SNSType type) async {
+    try {
+      SnsLoginModel? snsUser;
+      switch (type) {
+        case SNSType.kakao:
+          snsUser = await loginKaKao();
+          break;
+        // case SNSType.google:
+        //   snsUser = await signInByGoogle();
+        //   break;
+        // case SNSType.naver:
+        //   snsUser = await signInByNaver();
+        //   break;
+        // case SNSType.apple:
+        //   snsUser = await signInWithApple();
+        //   break;
+        default:
+          break;
+      }
+      return snsUser;
+    } catch (e) {
+      // AppLogger.error('Error signInFollowSNS: ${type.toString()} ${e.toString()}');
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +144,14 @@ class _LoginState extends State<Login> {
                 icon: const Icon(Icons.add_circle_outline_outlined),
                 label: const Text("Sign Up"),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  signInFollowSNS(
+                    SNSType.kakao,
+                  );
+                },
+                child: const Text('Kakao Login'),
+              )
             ],
           ),
         ),
